@@ -1,0 +1,48 @@
+#include <iostream>
+#include <cstring>
+
+int main() {
+	setlocale(LC_ALL, "RUS");
+	std::cout << "Введите количество заказанных товаров: ";
+	int cnt;
+	float summ = 0;
+	std::cin >> cnt;
+	std::cin.ignore();
+	char** str = new char* [cnt];
+	int* sp_kol = new int [cnt];
+	float* sp_price = new float [cnt];
+	for (int i = 0; i < cnt; i++) {
+		std::cout << "Введите название товара " << i + 1 << ": ";
+		char buffer[100];
+		std::cin.getline(buffer, 100);
+		str[i] = new char[strlen(buffer) + 1];
+		strcpy_s(str[i], strlen(buffer)+1, buffer);
+		std::cout << "Введите количество товара " << i + 1 << ": ";
+		std::cin >> sp_kol[i];
+		std::cin.ignore();
+		std::cout << "Введите цену за товар " << i + 1 << ": ";
+		std::cin >> sp_price[i];
+		std::cin.ignore();
+		std::cout << "Общая стоимость заказа: " << sp_price[i] * sp_kol[i] << std::endl;
+		summ += sp_price[i] * sp_kol[i];
+	}
+	for (int i = 0; i < cnt; i++) {
+		for (int j = 0; j < cnt - i - 1; ++j) {
+			if (strcmp(str[j], str[j + 1]) > 0) {
+				std::swap(str[j], str[j + 1]);
+				std::swap(sp_kol[j] , sp_kol[j + 1]);
+				std::swap(sp_price[j], sp_price[j + 1]);
+			}
+		}
+	}
+	for (int i = 0; i < cnt; i++) {
+		std::cout << i+1 << ". " << str[i] << " - " << "Количество: " << sp_kol[i] << ", " << "Цена за единиу: " << sp_price[i] << std::endl;
+	}
+	std::cout << "Общая сумма всех заказов: " << summ;
+	for (int i = 0; i < cnt; i++) {
+		delete[] str[i];
+	}
+	delete[] str;
+	delete[] sp_price;
+	delete[] sp_kol;
+}
